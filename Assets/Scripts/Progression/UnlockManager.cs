@@ -95,10 +95,11 @@ namespace BrainrotRush
         {
             return new List<CosmeticDef>
             {
-                new CosmeticDef { id = "char_default", displayName = "Skibidi Scout", type = CosmeticType.Character, description = "Starter runner" },
-                new CosmeticDef { id = "char_sigma", displayName = "Sigma Sprinter", type = CosmeticType.Character, tokenCost = 2, tint = new Color(0.3f, 0.8f, 1f), description = "Cool blue drip" },
-                new CosmeticDef { id = "char_rizz", displayName = "Rizz Runner", type = CosmeticType.Character, gemCost = 80, tint = new Color(1f, 0.4f, 0.7f), description = "Pink chaos energy" },
-                new CosmeticDef { id = "char_ohio", displayName = "Ohio Overlord", type = CosmeticType.Character, coinCost = 2500, tint = new Color(0.9f, 0.6f, 0.2f), description = "Only in Ohio" },
+                // Character IDs map to ArtCatalog / Assets/Art meshes. Legacy ids kept as aliases in ArtCatalog.
+                new CosmeticDef { id = "char_default", displayName = "Tung Tung Sahur", type = CosmeticType.Character, tint = new Color(0.72f, 0.55f, 0.35f), description = "Starter bat brainrot" },
+                new CosmeticDef { id = "char_sigma", displayName = "Cappuccino Assassino", type = CosmeticType.Character, tokenCost = 2, tint = new Color(0.35f, 0.25f, 0.2f), description = "Espresso stealth drip" },
+                new CosmeticDef { id = "char_rizz", displayName = "Ballerina Cappuccina", type = CosmeticType.Character, gemCost = 80, tint = new Color(1f, 0.65f, 0.8f), description = "Tutu chaos energy" },
+                new CosmeticDef { id = "char_ohio", displayName = "Tralalero Tralala", type = CosmeticType.Character, coinCost = 2500, tint = new Color(0.35f, 0.55f, 0.9f), description = "Three-legged shark runner" },
 
                 new CosmeticDef { id = "trail_none", displayName = "No Trail", type = CosmeticType.Trail },
                 new CosmeticDef { id = "trail_fire", displayName = "Fire Trail", type = CosmeticType.Trail, coinCost = 800, tint = new Color(1f, 0.4f, 0.1f) },

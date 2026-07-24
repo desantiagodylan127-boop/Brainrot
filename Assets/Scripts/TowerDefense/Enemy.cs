@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using BrainrotRush.Art;
 
 namespace BrainrotRush
 {
@@ -18,7 +19,7 @@ namespace BrainrotRush
         EnemyPath _path;
         HealthBar _healthBar;
         TDGameManager _mgr;
-        Renderer _renderer;
+        Transform _visualRoot;
         Color _baseColor;
 
         public float HealthNormalized => _health / MaxHealth;
@@ -36,10 +37,9 @@ namespace BrainrotRush
             DamageToBase = boss ? 5 : 1;
             _waypointIndex = 0;
             transform.position = path.GetPoint(0);
-            _renderer = GetComponent<Renderer>();
             _baseColor = color;
-            if (_renderer) _renderer.material.color = color;
-            if (boss) transform.localScale = Vector3.one * 1.8f;
+            _visualRoot = transform.Find("ArtVisual");
+            BrainrotArtFactory.TintRenderers(_visualRoot, color);
 
             _healthBar = gameObject.AddComponent<HealthBar>();
             _healthBar.Init(this);
@@ -56,7 +56,7 @@ namespace BrainrotRush
         {
             SlowMultiplier = Mathf.Min(SlowMultiplier, multiplier);
             _slowTimer = Mathf.Max(_slowTimer, duration);
-            if (_renderer) _renderer.material.color = Color.Lerp(_baseColor, Color.cyan, 0.5f);
+            BrainrotArtFactory.TintRenderers(_visualRoot, Color.Lerp(_baseColor, Color.cyan, 0.5f));
         }
 
         void Die()
@@ -76,7 +76,7 @@ namespace BrainrotRush
                 if (_slowTimer <= 0f)
                 {
                     SlowMultiplier = 1f;
-                    if (_renderer) _renderer.material.color = _baseColor;
+                    BrainrotArtFactory.TintRenderers(_visualRoot, _baseColor);
                 }
             }
 

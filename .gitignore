@@ -44,3 +44,11 @@ Thumbs.db
 
 # Gradle
 .gradle/
+
+# Large Blender working files (export FBX/OBJ into Resources instead)
+Assets/Art/Blender/**/*.blend
+Assets/Art/Blender/**/*.blend1
+Assets/Art/DropIn/**/*.glb
+Assets/Art/DropIn/**/*.fbx
+__pycache__/
+*.pyc

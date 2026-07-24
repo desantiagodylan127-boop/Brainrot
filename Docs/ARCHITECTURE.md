@@ -18,6 +18,6 @@ Persisted through `SaveSystem` (JSON in PlayerPrefs).
 - **TD**: enemies follow `EnemyPath` waypoints. Towers acquire nearest target in range.
 
 ## Extending
-- Art: swap CreatePrimitive visuals for prefabs; keep the same component APIs.
+- Art: `BrainrotArtFactory` + `ArtCatalog` attach visuals by mesh key. Prefer Resources meshes under `Assets/Resources/Art/Models/`; procedural silhouettes are the fallback. See `Docs/ASSETS.md`.
 - Ads/IAP: replace stub bodies in `AdManager` / `IAPManager`.
 - Data: optional ScriptableObjects under `Assets/Scripts/Data` for designer-friendly tuning.

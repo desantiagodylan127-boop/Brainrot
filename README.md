@@ -52,6 +52,7 @@ Optional menu: **Brainrot Rush → Create Bootstrap Scene** / **Reset Player Sav
 ```
 Assets/Scripts/
   Core/           GameServices, save, events, enums
+  Art/            ArtCatalog + BrainrotArtFactory (meshes / drop-ins)
   Economy/        currency, daily, missions, achievements, battle pass
   Progression/    XP, unlocks / cosmetics catalog
   Runner/         endless runner gameplay + UI
@@ -60,22 +61,38 @@ Assets/Scripts/
   UI/             main menu, meta panels, UIFactory
   Bootstrap/      AppBootstrap runtime entry
   Data/           optional ScriptableObject defs
+
+Assets/Art/                 Blender-friendly source OBJs + DropIn/
+Assets/Resources/Art/Models Runtime mesh keys (Resources.Load)
 ```
 
 - `GameServices` — DontDestroyOnLoad singleton (save + shared systems)
 - `GameEvents` — lightweight static events
 - `SaveSystem` — PlayerPrefs JSON
 - `AppBootstrap` — builds menu / runner / TD at runtime (no prefab dependency)
+- `BrainrotArtFactory` — Resources mesh if present, else procedural silhouette
+
+## Art / Blender
+
+See **[Docs/ASSETS.md](Docs/ASSETS.md)** for mesh keys, import steps, and marketplace links.
+
+Characters now use Italian Brainrot stand-ins (Tung Tung Sahur, Ballerina Cappuccina, Tralalero Tralala, Cappuccino Assassino). TD waves cycle Bombardiro, Patapim, Lirili, Boneca, Tralalero.
+
+```bash
+python3 tools/generate_brainrot_meshes.py   # regenerate OBJ placeholders
+```
+
+Drop finished FBX/OBJ exports into `Assets/Resources/Art/Models/...` using the catalog filenames.
 
 ## Design Notes
 
-- Speed over perfection: primitives + runtime UI, modular readable scripts
+- Speed over perfection: modular scripts, runtime UI, swappable art
 - Cosmetics are visual only
 - No pay-to-win (IAP is cosmetics / convenience / gems for cosmetics & battle pass)
 
 ## Next Steps (when polishing)
 
-- Replace primitives with Brainrot character / tower art
+- Swap placeholders for Sketchfab / BlenderKit brainrot packs (see Docs/ASSETS.md)
 - Wire AdMob / Unity Ads and Unity IAP
 - Add audio, juice, and particle VFX
 - Split modes into dedicated baked scenes if needed for shipping

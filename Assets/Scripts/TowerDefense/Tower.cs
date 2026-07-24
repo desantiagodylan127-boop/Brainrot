@@ -1,4 +1,5 @@
 using UnityEngine;
+using BrainrotRush.Art;
 
 namespace BrainrotRush
 {
@@ -13,8 +14,9 @@ namespace BrainrotRush
 
         float _cooldown;
         Transform _muzzle;
-        Renderer _renderer;
+        Transform _visualRoot;
         Color _skinTint = Color.white;
+        Color _baseCol = Color.gray;
 
         public static int BaseCost(TowerType type) => type switch
         {
@@ -54,8 +56,7 @@ namespace BrainrotRush
 
         void BuildVisual()
         {
-            _renderer = GetComponent<Renderer>();
-            Color baseCol = Type switch
+            _baseCol = Type switch
             {
                 TowerType.RapidFire => new Color(0.3f, 0.85f, 0.4f),
                 TowerType.Cannon => new Color(0.85f, 0.45f, 0.2f),
@@ -63,16 +64,15 @@ namespace BrainrotRush
                 TowerType.Laser => new Color(1f, 0.3f, 0.55f),
                 _ => Color.gray
             };
-            baseCol = Color.Lerp(baseCol, _skinTint, 0.35f);
-            if (_renderer) _renderer.material.color = baseCol;
+            _baseCol = Color.Lerp(_baseCol, _skinTint, 0.35f);
 
-            var muzzleGo = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            muzzleGo.name = "Muzzle";
-            muzzleGo.transform.SetParent(transform);
-            muzzleGo.transform.localPosition = new Vector3(0f, 0.6f, 0.55f);
-            muzzleGo.transform.localScale = new Vector3(0.25f, 0.25f, 0.6f);
-            Destroy(muzzleGo.GetComponent<Collider>());
-            muzzleGo.GetComponent<Renderer>().material.color = Color.Lerp(baseCol, Color.white, 0.3f);
+            BrainrotArtFactory.HideRootPrimitive(gameObject);
+            var meshKey = ArtCatalog.TowerMeshKey(Type);
+            _visualRoot = BrainrotArtFactory.AttachVisual(transform, meshKey, _baseCol, 1f).transform;
+
+            var muzzleGo = new GameObject("Muzzle");
+            muzzleGo.transform.SetParent(transform, false);
+            muzzleGo.transform.localPosition = new Vector3(0f, 0.85f, 0.85f);
             _muzzle = muzzleGo.transform;
         }
 

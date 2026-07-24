@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using BrainrotRush.Art;
 
 namespace BrainrotRush
 {
@@ -38,13 +39,14 @@ namespace BrainrotRush
             if (bossWave)
             {
                 float bossHp = 120f + wave * 40f;
-                SpawnOne(bossHp, 1.35f, 50 + wave * 5, true, new Color(0.9f, 0.15f, 0.2f));
+                SpawnOne("boss_bombardiro", bossHp, 1.35f, 50 + wave * 5, true, new Color(0.75f, 0.15f, 0.15f));
                 yield return new WaitForSeconds(1.4f);
 
                 int adds = 3 + wave / 5;
                 for (int i = 0; i < adds; i++)
                 {
-                    SpawnOne(20f + wave * 6f, 2f, 8 + wave, false, new Color(0.8f, 0.4f, 0.4f));
+                    string id = ArtCatalog.EnemyRoster[i % ArtCatalog.EnemyRoster.Length];
+                    SpawnOne(id, 20f + wave * 6f, 2f, 8 + wave, false, ArtCatalog.EnemyTint(id));
                     yield return new WaitForSeconds(0.55f);
                 }
             }
@@ -53,11 +55,11 @@ namespace BrainrotRush
                 int count = 5 + wave * 2;
                 for (int i = 0; i < count; i++)
                 {
+                    string id = ArtCatalog.EnemyRoster[(wave + i) % ArtCatalog.EnemyRoster.Length];
                     float hp = 20f + wave * 8f;
                     float speed = 1.8f + wave * 0.05f;
                     int reward = 8 + wave;
-                    Color color = Color.HSVToRGB((wave * 0.13f) % 1f, 0.7f, 0.95f);
-                    SpawnOne(hp, speed, reward, false, color);
+                    SpawnOne(id, hp, speed, reward, false, ArtCatalog.EnemyTint(id));
                     yield return new WaitForSeconds(Mathf.Max(0.35f, 1.1f - wave * 0.04f));
                 }
             }
@@ -65,11 +67,17 @@ namespace BrainrotRush
             _spawning = false;
         }
 
-        void SpawnOne(float hp, float speed, int reward, bool boss, Color color)
+        void SpawnOne(string enemyId, float hp, float speed, int reward, bool boss, Color color)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            go.name = boss ? "BossBrainrot" : "BrainrotEnemy";
-            go.transform.localScale = boss ? Vector3.one * 1.6f : Vector3.one * 0.9f;
+            go.name = boss ? "Boss_" + enemyId : enemyId;
+            go.transform.localScale = Vector3.one;
+            // Invisible gameplay capsule; art is a child visual.
+            BrainrotArtFactory.HideRootPrimitive(go);
+            var meshKey = ArtCatalog.EnemyMeshKey(enemyId, boss);
+            float artScale = boss ? 1.55f : 0.95f;
+            BrainrotArtFactory.AttachVisual(go.transform, meshKey, color, artScale);
+
             var enemy = go.AddComponent<Enemy>();
             enemy.Init(_path, _mgr, hp, speed, reward, boss, color);
             AliveEnemies++;
